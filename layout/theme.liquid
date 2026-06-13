@@ -28,6 +28,11 @@
     <link rel="dns-prefetch" href="https://maps.googleapis.com">
     <link rel="dns-prefetch" href="https://maps.gstatic.com">
 
+    <script>
+      // SHOP FIVE — apply saved dark mode before first paint to avoid a flash
+      try { if (localStorage.getItem('sf-theme') === 'dark') document.documentElement.classList.add('sf-dark'); } catch (e) {}
+    </script>
+
     {% render 'social-meta-tags' %}
     {% render 'css-variables' %}
 

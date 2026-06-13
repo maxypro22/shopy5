@@ -1,0 +1,358 @@
+{%- comment -%}
+  SHOP FIVE — Hero banner (Shopcart-mockup style)
+  Big headline left, lifestyle image right, soft rounded panel,
+  floating discount chip + decorative blobs, staggered entrance animation.
+{%- endcomment -%}
+
+<section class="sf-hero" id="sf-hero-{{ section.id }}">
+  <div class="container">
+    <div class="sf-hero__panel">
+      {%- if section.settings.show_blobs -%}
+        <span class="sf-hero__blob sf-hero__blob--1" aria-hidden="true"></span>
+        <span class="sf-hero__blob sf-hero__blob--2" aria-hidden="true"></span>
+      {%- endif -%}
+
+      <div class="sf-hero__content">
+        {%- if section.settings.badge_text != blank -%}
+          <span class="sf-hero__badge sf-hero__anim" style="--ha: 0;">{{ section.settings.badge_text }}</span>
+        {%- endif -%}
+
+        {%- if section.settings.title != blank -%}
+          <h2 class="sf-hero__title sf-hero__anim" style="--ha: 1;">{{ section.settings.title }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+          <p class="sf-hero__text sf-hero__anim" style="--ha: 2;">{{ section.settings.text }}</p>
+        {%- endif -%}
+
+        <div class="sf-hero__actions sf-hero__anim" style="--ha: 3;">
+          {%- if section.settings.button_label != blank -%}
+            <a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button button--primary sf-hero__button">{{ section.settings.button_label }}</a>
+          {%- endif -%}
+
+          {%- if section.settings.secondary_button_label != blank -%}
+            <a href="{{ section.settings.secondary_button_link | default: routes.all_products_collection_url }}" class="button button--ternary sf-hero__button">{{ section.settings.secondary_button_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="sf-hero__media sf-hero__anim" style="--ha: 2;">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 1100 | image_tag: loading: 'eager', sizes: '(max-width: 999px) 100vw, 620px', widths: '400,600,800,1100', class: 'sf-hero__image', alt: section.settings.image.alt | default: section.settings.title }}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'sf-hero__image sf-hero__image--placeholder' }}
+        {%- endif -%}
+
+        {%- if section.settings.chip_text != blank -%}
+          <span class="sf-hero__chip">{{ section.settings.chip_text }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #sf-hero-{{ section.id }} {
+    margin-top: 16px;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 24px;
+    min-height: {{ section.settings.desktop_height }}px;
+    padding: 44px 56px 0;
+    border-radius: 28px;
+    background: {{ section.settings.panel_background }};
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__content {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 44px;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    margin-bottom: 18px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.65);
+    color: {{ section.settings.panel_text_color }};
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 1px 2px rgba(16, 18, 38, 0.06);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__title {
+    margin: 0 0 14px;
+    color: {{ section.settings.panel_text_color }};
+    font-size: clamp(30px, 3.6vw, 52px);
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    white-space: pre-line;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__text {
+    margin: 0 0 26px;
+    max-width: 44ch;
+    color: {{ section.settings.panel_text_color | color_modify: 'alpha', 0.72 }};
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__button {
+    padding: 15px 36px;
+    font-size: 15px;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__media {
+    position: relative;
+    z-index: 1;
+    align-self: end;
+    display: flex;
+    justify-content: center;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__image {
+    display: block;
+    max-height: {{ section.settings.desktop_height | minus: 20 }}px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom;
+    filter: drop-shadow(0 24px 38px rgba(16, 18, 38, 0.22));
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__image--placeholder {
+    width: 100%;
+    height: {{ section.settings.desktop_height | minus: 40 }}px;
+    opacity: 0.35;
+  }
+
+  /* Floating discount chip — a separate layer above the image */
+  #sf-hero-{{ section.id }} .sf-hero__chip {
+    position: absolute;
+    top: 16%;
+    inset-inline-end: 8%;
+    z-index: 3;
+    padding: 14px 20px;
+    border-radius: 18px;
+    background: var(--sf-indigo, #5346F2);
+    color: #fff;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    box-shadow: 0 14px 30px -8px rgba(83, 70, 242, 0.55);
+    animation: sf-hero-float 4.5s ease-in-out infinite;
+  }
+
+  /* Decorative blobs — soft depth layers behind the content */
+  #sf-hero-{{ section.id }} .sf-hero__blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__blob--1 {
+    width: 420px;
+    height: 420px;
+    top: -160px;
+    inset-inline-end: -90px;
+    background: radial-gradient(circle, rgba(83, 70, 242, 0.16), transparent 70%);
+    animation: sf-hero-pulse 9s ease-in-out infinite;
+  }
+
+  #sf-hero-{{ section.id }} .sf-hero__blob--2 {
+    width: 300px;
+    height: 300px;
+    bottom: -130px;
+    inset-inline-start: 32%;
+    background: radial-gradient(circle, rgba(255, 180, 0, 0.14), transparent 70%);
+    animation: sf-hero-pulse 11s ease-in-out 1.2s infinite;
+  }
+
+  /* Staggered entrance */
+  #sf-hero-{{ section.id }} .sf-hero__anim {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: sf-hero-enter 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(var(--ha, 0) * 130ms + 80ms);
+  }
+
+  @keyframes sf-hero-enter {
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes sf-hero-float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-12px) rotate(2deg); }
+  }
+
+  @keyframes sf-hero-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.15); opacity: 0.75; }
+  }
+
+  @media screen and (max-width: 999px) {
+    #sf-hero-{{ section.id }} .sf-hero__panel {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 34px 26px 0;
+      min-height: 0;
+      text-align: center;
+      border-radius: 22px;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__content {
+      padding-bottom: 28px;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__text {
+      margin-inline: auto;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__actions {
+      justify-content: center;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__image {
+      max-height: 320px;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__image--placeholder {
+      height: 260px;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__chip {
+      font-size: 16px;
+      padding: 11px 16px;
+      top: auto;
+      bottom: 18%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #sf-hero-{{ section.id }} .sf-hero__anim {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+
+    #sf-hero-{{ section.id }} .sf-hero__chip,
+    #sf-hero-{{ section.id }} .sf-hero__blob {
+      animation: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — Hero",
+  "class": "shopify-section--sf-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "🔥 Limited time offer"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Heading",
+      "default": "Grab Up To 50% Off On\nSelected Products"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Discover the best deals on watches, perfumes, gaming and more — delivered anywhere in Doha within 4 hours."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary button label",
+      "default": "Buy Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary button label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Transparent PNG of a product or model works best (like the mockup)."
+    },
+    {
+      "type": "text",
+      "id": "chip_text",
+      "label": "Floating chip text",
+      "default": "-50%"
+    },
+    {
+      "type": "color",
+      "id": "panel_background",
+      "label": "Panel background",
+      "default": "#F4ECE2"
+    },
+    {
+      "type": "color",
+      "id": "panel_text_color",
+      "label": "Panel text color",
+      "default": "#14162B"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 360,
+      "max": 620,
+      "step": 20,
+      "unit": "px",
+      "default": 460
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blobs",
+      "label": "Show decorative shapes",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — Hero",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}

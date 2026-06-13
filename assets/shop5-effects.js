@@ -164,7 +164,32 @@
   }
 
   /* ------------------------------------------------------------------
-     5. Back-to-top button
+     5. Dark / light mode toggle (class set pre-paint by theme.liquid)
+     ------------------------------------------------------------------ */
+  function syncThemeToggles() {
+    var dark = docEl.classList.contains('sf-dark');
+    var toggles = document.querySelectorAll('[data-sf-theme-toggle]');
+    for (var i = 0; i < toggles.length; i++) toggles[i].setAttribute('aria-pressed', String(dark));
+  }
+
+  document.addEventListener('click', function (event) {
+    var toggle = event.target.closest && event.target.closest('[data-sf-theme-toggle]');
+    if (!toggle) return;
+
+    var dark = !docEl.classList.contains('sf-dark');
+    docEl.classList.toggle('sf-dark', dark);
+    try { localStorage.setItem('sf-theme', dark ? 'dark' : 'light'); } catch (e) { /* private mode */ }
+    syncThemeToggles();
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncThemeToggles);
+  } else {
+    syncThemeToggles();
+  }
+
+  /* ------------------------------------------------------------------
+     6. Back-to-top button
      ------------------------------------------------------------------ */
   var topButton = document.createElement('button');
   topButton.type = 'button';

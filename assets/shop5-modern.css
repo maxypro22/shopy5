@@ -886,6 +886,227 @@ html.sf-js .sf-reveal.sf-in {
 }
 
 /* --------------------------------------------------------------------------
+   18. INLINE HEADER NAV (logo | links | search | actions — mockup layout)
+   -------------------------------------------------------------------------- */
+.sf-header-nav {
+  flex-shrink: 0;
+  margin-inline-start: 8px;
+  margin-inline-end: 18px;
+}
+
+/* the old condensed hamburger menu is replaced by the inline links */
+.header--condensed .header__desktop-nav {
+  display: none;
+}
+
+.sf-header-nav__list {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sf-header-nav__item {
+  position: relative;
+}
+
+.sf-header-nav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: var(--sf-radius-pill);
+  color: var(--header-text-color);
+  font-weight: 600;
+  font-size: calc(var(--base-text-font-size) + 0px);
+  white-space: nowrap;
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.sf-header-nav__link:hover {
+  color: var(--sf-indigo);
+  background: var(--sf-indigo-soft);
+}
+
+.sf-header-nav__caret {
+  transition: transform 0.3s var(--sf-ease);
+}
+
+.sf-header-nav__item:hover .sf-header-nav__caret,
+.sf-header-nav__item:focus-within .sf-header-nav__caret {
+  transform: rotate(180deg);
+}
+
+/* CSS dropdown */
+.sf-header-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  inset-inline-start: 0;
+  min-width: 220px;
+  padding: 8px;
+  border-radius: var(--sf-radius-md);
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-line);
+  box-shadow: var(--sf-shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.28s var(--sf-ease), transform 0.28s var(--sf-ease), visibility 0.28s;
+  z-index: 30;
+}
+
+/* hover bridge so the dropdown doesn't close crossing the 8px gap */
+.sf-header-nav__dropdown::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
+.sf-header-nav__item:hover .sf-header-nav__dropdown,
+.sf-header-nav__item:focus-within .sf-header-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sf-header-nav__sub-link {
+  display: block;
+  padding: 9px 14px;
+  border-radius: var(--sf-radius-xs);
+  color: var(--sf-ink);
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease, padding-inline-start 0.25s var(--sf-ease);
+}
+
+.sf-header-nav__sub-link:hover {
+  background: var(--sf-indigo-soft);
+  color: var(--sf-indigo);
+  padding-inline-start: 18px;
+}
+
+/* keep the inline row tidy: search takes the remaining space */
+.header--search-expanded .header__search-bar-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------------------------
+   19. DARK / LIGHT MODE TOGGLE BUTTON
+   -------------------------------------------------------------------------- */
+.sf-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: var(--sf-bg);
+  color: var(--header-text-color);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--sf-spring), box-shadow 0.25s ease;
+}
+
+.sf-theme-toggle:hover {
+  background: var(--sf-indigo-soft);
+  color: var(--sf-indigo);
+  transform: translateY(-2px);
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.sf-theme-toggle svg {
+  position: absolute;
+  transition: opacity 0.35s ease, transform 0.45s var(--sf-spring);
+}
+
+/* light mode: show moon, hide sun */
+.sf-theme-toggle__sun  { opacity: 0; transform: rotate(90deg) scale(0.4); }
+.sf-theme-toggle__moon { opacity: 1; transform: none; }
+
+html.sf-dark .sf-theme-toggle__sun  { opacity: 1; transform: none; }
+html.sf-dark .sf-theme-toggle__moon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+
+/* --------------------------------------------------------------------------
+   20. DARK MODE — token + Warehouse variable overrides
+   The whole theme reads CSS variables, so retinting the tokens carries
+   most components. Targeted fixes follow.
+   -------------------------------------------------------------------------- */
+html.sf-dark {
+  --sf-surface: #141931;
+  --sf-bg: #0B0E1C;
+  --sf-ink: #F1F3FD;
+  --sf-slate: #A7ADC6;
+  --sf-mist: #7A8099;
+  --sf-line: #262C4A;
+  --sf-indigo-soft: #221F45;
+  --sf-indigo-glow: rgba(106, 92, 255, 0.35);
+
+  --sf-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --sf-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --sf-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.35), 0 12px 28px -8px rgba(0, 0, 0, 0.55);
+  --sf-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.4), 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+
+  /* Warehouse theme variables */
+  --background: #0B0E1C;
+  --secondary-background: #141931;
+  --secondary-background-rgb: 20, 25, 49;
+  --text-color: #A7ADC6;
+  --text-color-rgb: 167, 173, 198;
+  --heading-color: #F1F3FD;
+  --border-color: #262C4A;
+  --border-color-rgb: 38, 44, 74;
+  --form-border-color: #303761;
+  --input-background: #141931;
+  --accent-background: rgba(83, 70, 242, 0.16);
+  --header-background: #0E1226;
+  --header-text-color: #F1F3FD;
+  --header-light-text-color: #8A90A5;
+  --header-border-color: rgba(138, 144, 165, 0.25);
+  --footer-background-color: #070A18;
+  --payment-terms-background-color: #0B0E1C;
+  --flickity-arrow-color: #A7ADC6;
+}
+
+html.sf-dark body {
+  background: var(--background);
+  color: var(--text-color);
+}
+
+/* glass header in dark */
+html.sf-dark.sf-scrolled .shopify-section--header .header {
+  background: rgba(14, 18, 38, 0.86) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* search field */
+html.sf-dark .search-bar__input {
+  background: var(--sf-bg);
+  color: var(--sf-ink);
+}
+
+html.sf-dark .search-bar__input:focus {
+  background: var(--sf-surface);
+}
+
+/* carousel arrows */
+html.sf-dark .flickity-prev-next-button {
+  background: rgba(20, 25, 49, 0.92) !important;
+}
+
+/* scrollbar */
+html.sf-dark ::-webkit-scrollbar-thumb {
+  background: #303761;
+  border-color: var(--sf-bg);
+}
+
+/* the announcement bar + footer are already navy — they work in both modes */
+
+/* --------------------------------------------------------------------------
    17. REDUCED MOTION — disable all decorative animation
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {

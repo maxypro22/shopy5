@@ -87,6 +87,40 @@
 
         {%- comment -%}
         --------------------------------------------------------------------------------------
+        SHOP FIVE — INLINE DESKTOP NAV (logo | links | search | actions, like the mockup)
+        Pure CSS dropdowns, independent from the theme's menu JS.
+        --------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- if navigation_menu.links.size > 0 -%}
+          <nav class="sf-header-nav hidden-pocket hidden-lap" aria-label="{{ 'header.navigation.menu' | t }}">
+            <ul class="sf-header-nav__list list--unstyled" role="list">
+              {%- for link in navigation_menu.links limit: 6 -%}
+                <li class="sf-header-nav__item {% if link.links.size > 0 %}sf-header-nav__item--has-children{% endif %}">
+                  <a href="{{ link.url }}" class="sf-header-nav__link" {% if link.links.size > 0 %}aria-haspopup="true"{% endif %}>
+                    {{- link.title -}}
+                    {%- if link.links.size > 0 -%}
+                      <svg class="sf-header-nav__caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                    {%- endif -%}
+                  </a>
+
+                  {%- if link.links.size > 0 -%}
+                    <div class="sf-header-nav__dropdown">
+                      <ul class="list--unstyled" role="list">
+                        {%- for sub_link in link.links -%}
+                          <li><a class="sf-header-nav__sub-link" href="{{ sub_link.url }}">{{ sub_link.title }}</a></li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        {%- comment -%}
+        --------------------------------------------------------------------------------------
         SEARCH COMPONENT
         --------------------------------------------------------------------------------------
         {%- endcomment -%}
@@ -273,6 +307,14 @@
               <a class="header__action-item-link" href="{{ routes.search_url }}" data-action="toggle-search" aria-expanded="false" aria-label="{{ 'header.search.open_search' | t }}">{% render 'icon', icon: 'search' %}</a>
             </div>
           {%- endif -%}
+
+          {%- comment -%}SHOP FIVE — dark / light mode toggle{%- endcomment -%}
+          <div class="header__action-item header__action-item--theme">
+            <button type="button" class="header__action-item-link sf-theme-toggle" data-sf-theme-toggle aria-pressed="false" aria-label="{% if request.locale.iso_code contains 'ar' %}تبديل الوضع الليلي{% else %}Toggle dark mode{% endif %}">
+              <svg class="sf-theme-toggle__moon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+              <svg class="sf-theme-toggle__sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
+          </div>
 
           {%- if shop.customer_accounts_enabled -%}
             <div class="header__action-item header__action-item--account">
