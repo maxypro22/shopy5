@@ -1118,6 +1118,85 @@ html.sf-dark ::-webkit-scrollbar-thumb {
 /* the announcement bar + footer are already navy — they work in both modes */
 
 /* --------------------------------------------------------------------------
+   21. COLLECTIONS LIST PAGE — modern layered cards (MLC-mockup style)
+   -------------------------------------------------------------------------- */
+.collection-block-item {
+  border-radius: var(--sf-radius-lg);
+  border: 1px solid var(--sf-line);
+  background: var(--sf-surface);
+  box-shadow: var(--sf-shadow-xs);
+  transition:
+    transform var(--sf-dur) var(--sf-ease),
+    box-shadow var(--sf-dur) var(--sf-ease),
+    border-color var(--sf-dur) ease;
+}
+
+@media (hover: hover) {
+  .collection-block-item:hover {
+    transform: translateY(-6px);
+    border-color: rgba(83, 70, 242, 0.35);
+    box-shadow: var(--sf-shadow-md), var(--sf-shadow-indigo);
+  }
+}
+
+/* soft gradient instead of the flat dark overlay */
+.collection-block-item--overlay:before {
+  background: linear-gradient(to top, rgba(10, 14, 35, 0.38) 0%, rgba(10, 14, 35, 0.05) 45%, transparent 65%);
+}
+
+/* calm, modern zoom (theme default is scale(1.4) over 8s) */
+.collection-block-item__image {
+  transition: transform 0.8s var(--sf-ease), opacity 0.3s ease-in-out !important;
+}
+
+@media (hover: hover) {
+  .features--animate-zoom .collection-block-item:hover .collection-block-item__image {
+    transform: scale(1.07);
+  }
+}
+
+/* title becomes a frosted glass chip pinned to the bottom corner */
+.collection-block-item__title {
+  top: auto;
+  left: auto;
+  bottom: 16px;
+  inset-inline-start: 16px;
+  transform: none;
+  width: auto;
+  max-width: calc(100% - 32px);
+  padding: 10px 20px;
+  border-radius: var(--sf-radius-pill);
+  background: rgba(255, 255, 255, 0.85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--sf-ink);
+  text-shadow: none;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: var(--sf-shadow-sm);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s var(--sf-spring);
+}
+
+@media (hover: hover) {
+  .collection-block-item:hover .collection-block-item__title {
+    background: var(--sf-indigo);
+    color: #fff;
+    transform: translateY(-3px);
+  }
+}
+
+html.sf-dark .collection-block-item__title {
+  background: rgba(20, 25, 49, 0.85);
+  color: var(--sf-ink);
+}
+
+/* page heading */
+.collection-list__section .page__title {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* --------------------------------------------------------------------------
    17. REDUCED MOTION — disable all decorative animation
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
