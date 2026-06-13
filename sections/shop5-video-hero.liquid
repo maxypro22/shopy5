@@ -3,11 +3,18 @@
 
 <section class="sf-video-hero" id="sf-video-hero-{{ section.id }}" style="--vh: {{ section.settings.section_height }}vh;">
   <div class="sf-video-hero__media">
-    {%- if section.settings.video != blank -%}
-      {%- assign sf_video_poster = section.settings.video.preview_image | img_url: '1600x' -%}
-      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'sf-video-hero__video', poster: sf_video_poster }}
-    {%- elsif section.settings.fallback_image != blank -%}
-      <img class="sf-video-hero__poster" src="{{ section.settings.fallback_image | img_url: '1600x900' }}" alt="" loading="eager" fetchpriority="high">
+    {%- if section.settings.video_url != blank -%}
+      <video class="sf-video-hero__video" autoplay loop muted playsinline
+        {%- if section.settings.image != blank -%}
+          poster="{{ section.settings.image | img_url: '1600x900' }}"
+        {%- endif -%}>
+        <source src="{{ section.settings.video_url }}" type="video/mp4">
+      </video>
+    {%- elsif section.settings.image != blank -%}
+      <img class="sf-video-hero__poster"
+           src="{{ section.settings.image | img_url: '1600x900' }}"
+           alt=""
+           loading="eager">
     {%- else -%}
       <div class="sf-video-hero__default-bg"></div>
     {%- endif -%}
@@ -21,8 +28,7 @@
     {%- if section.settings.subtitle != blank -%}
       <p class="sf-video-hero__subtitle">{{ section.settings.subtitle }}</p>
     {%- endif -%}
-    <a href="{{ section.settings.button_link | default: routes.collections_url }}"
-       class="sf-video-hero__btn">
+    <a href="{{ section.settings.button_link | default: routes.collections_url }}" class="sf-video-hero__btn">
       {%- if section.settings.button_label != blank -%}
         {{ section.settings.button_label }}
       {%- elsif is_ar -%}تصفح الأقسام{%- else -%}Browse Collections{%- endif -%}
@@ -37,14 +43,16 @@
   "class": "shopify-section--sf-video-hero",
   "settings": [
     {
-      "type": "video",
-      "id": "video",
-      "label": "Video (upload to Shopify Files)"
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Upload your video to Shopify Admin → Content → Files, then paste the .mp4 URL here."
     },
     {
       "type": "image_picker",
-      "id": "fallback_image",
-      "label": "Fallback image (shown while video loads or if no video)"
+      "id": "image",
+      "label": "Background / poster image",
+      "info": "Shown while video loads, or when no video URL is set."
     },
     {
       "type": "range",

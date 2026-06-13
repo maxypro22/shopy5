@@ -58,7 +58,6 @@
     "shop5_recent_news": {
       "type": "shop5-recent-news",
       "settings": {
-        "blog": "news",
         "posts_count": 4
       }
     },
@@ -75,10 +74,7 @@
     },
     "shop5_app_download": {
       "type": "shop5-app-download",
-      "settings": {
-        "ios_link": "https://apps.apple.com/qa/app/shop-five-qatar/id1621345100",
-        "google_link": "https://play.google.com/store/apps/details?id=qa.shop5"
-      }
+      "settings": {}
     }
   },
   "order": [

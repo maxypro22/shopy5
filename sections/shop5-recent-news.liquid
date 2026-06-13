@@ -1,8 +1,7 @@
 {%- assign is_ar = false -%}
 {%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
 
-{%- assign blog_handle = section.settings.blog -%}
-{%- assign news_blog = blogs[blog_handle] -%}
+{%- assign news_blog = section.settings.blog -%}
 {%- assign posts_count = section.settings.posts_count | default: 4 -%}
 
 <section class="sf-news" id="sf-news-{{ section.id }}">
@@ -19,7 +18,7 @@
       {%- endif -%}
     </div>
 
-    {%- if news_blog != blank and news_blog.articles.size > 0 -%}
+    {%- if news_blog != blank and news_blog.articles_count > 0 -%}
       <div class="sf-news__grid">
         {%- for article in news_blog.articles limit: posts_count -%}
           <article class="sf-news__card" style="--ni: {{ forloop.index0 }};">
