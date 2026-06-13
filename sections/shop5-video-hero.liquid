@@ -4,7 +4,8 @@
 <section class="sf-video-hero" id="sf-video-hero-{{ section.id }}" style="--vh: {{ section.settings.section_height }}vh;">
   <div class="sf-video-hero__media">
     {%- if section.settings.video != blank -%}
-      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'sf-video-hero__video', poster: section.settings.video.preview_image | img_url: '1600x' }}
+      {%- assign sf_video_poster = section.settings.video.preview_image | img_url: '1600x' -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'sf-video-hero__video', poster: sf_video_poster }}
     {%- elsif section.settings.fallback_image != blank -%}
       <img class="sf-video-hero__poster" src="{{ section.settings.fallback_image | img_url: '1600x900' }}" alt="" loading="eager" fetchpriority="high">
     {%- else -%}
