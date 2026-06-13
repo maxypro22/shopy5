@@ -894,9 +894,25 @@ html.sf-js .sf-reveal.sf-in {
   margin-inline-end: 18px;
 }
 
-/* the old condensed hamburger menu is replaced by the inline links */
-.header--condensed .header__desktop-nav {
-  display: none;
+/* the old condensed hamburger menu is replaced by the inline links —
+   but only on desktop; tablets (641–999px) keep the hamburger because
+   the inline links are hidden there */
+@media screen and (min-width: 1000px) {
+  .header--condensed .header__desktop-nav {
+    display: none;
+  }
+
+  .header--condensed .header__logo {
+    margin-right: 14px;
+  }
+
+  /* keep the row balanced like the mockup: search sits between nav and actions */
+  .header--search-expanded .header__search-bar-wrapper {
+    flex: 1 1 360px;
+    min-width: 220px;
+    max-width: 600px;
+    margin-inline-start: auto;
+  }
 }
 
 .sf-header-nav__list {
@@ -989,11 +1005,6 @@ html.sf-js .sf-reveal.sf-in {
   padding-inline-start: 18px;
 }
 
-/* keep the inline row tidy: search takes the remaining space */
-.header--search-expanded .header__search-bar-wrapper {
-  flex: 1 1 auto;
-  min-width: 0;
-}
 
 /* --------------------------------------------------------------------------
    19. DARK / LIGHT MODE TOGGLE BUTTON
