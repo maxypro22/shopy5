@@ -363,14 +363,79 @@
         "html": "<meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>تحميل التطبيق</title>\n  <style>\n    body {\n      background-color: #fff; /* خلفية بيضاء */\n      text-align: center; /* توسيط المحتوى */\n      margin: 0;\n      padding: 0;\n    }\n\n    .app-stores {\n      display: inline-block;\n      margin: 20px 0; /* مسافة علوية وسفلية */\n    }\n\n    .app-stores a {\n      margin: 0 10px; /* مسافة بين الأيقونات */\n      text-decoration: none; /* إزالة الخط السفلي */\n    }\n\n    .app-stores img {\n      height: 40px; /* حجم ثابت للأيقونات */\n      width: auto;\n    }\n  </style>\n\n\n\n  <!-- قسم تحميل التطبيقات -->\n  <div class=\"app-stores\">\n    <a href=\"https://apps.apple.com/qa/app/shop-five-qatar/id1621345100\" target=\"_blank\">\n      <img src=\"https://i.postimg.cc/hhF5bHdH/download-on-the-app-store-apple-logo-png-transparent.png\" alt=\"تنزيل من متجر Apple\">\n    </a>\n    <a href=\"https://play.google.com/store/apps/details?id=qa.shop5&amp;pli=1\" target=\"_blank\">\n      <img src=\"https://i.postimg.cc/PrXzgV5h/google-play-badge-logo-png-transparent.png\" alt=\"تنزيل من Google Play\">\n    </a>\n  </div>"
       }
     },
-    "shop5_hero": {
-      "type": "shop5-hero",
-      "settings": {}
+    "shop5_filter_bar": {
+      "type": "shop5-filter-bar",
+      "blocks": {
+        "pill_1": {
+          "type": "pill",
+          "settings": {
+            "collection": "shoes",
+            "label": ""
+          }
+        },
+        "pill_2": {
+          "type": "pill",
+          "settings": {
+            "collection": "t-shirt",
+            "label": ""
+          }
+        },
+        "pill_3": {
+          "type": "pill",
+          "settings": {
+            "collection": "mens-watch",
+            "label": ""
+          }
+        },
+        "pill_4": {
+          "type": "pill",
+          "settings": {
+            "collection": "womens-watch",
+            "label": ""
+          }
+        },
+        "pill_5": {
+          "type": "pill",
+          "settings": {
+            "collection": "cap",
+            "label": ""
+          }
+        },
+        "pill_6": {
+          "type": "pill",
+          "settings": {
+            "collection": "glasses",
+            "label": ""
+          }
+        },
+        "pill_7": {
+          "type": "pill",
+          "settings": {
+            "collection": "cotton-shorts",
+            "label": ""
+          }
+        }
+      },
+      "block_order": [
+        "pill_1",
+        "pill_2",
+        "pill_3",
+        "pill_4",
+        "pill_5",
+        "pill_6",
+        "pill_7"
+      ],
+      "settings": {
+        "show_all_filters": true,
+        "all_filters_label": "All Filters",
+        "show_sort": true,
+        "sort_label": "Sort by"
+      }
     }
   },
   "order": [
-    "shop5_hero",
     "slideshow",
+    "shop5_filter_bar",
     "db72995a-1ca9-49f1-a989-2fabadd4ea43",
     "ffa42f9b-9f5e-4881-a231-2995263f77b7",
     "featured_collection_bk4TyK",

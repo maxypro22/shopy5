@@ -1,0 +1,286 @@
+{%- comment -%}
+  SHOP FIVE — Category / filter pill bar (Shopcart-mockup style)
+  Pill links to collections on the left, "All filters" pill, and a
+  "Sort by" dropdown on the right (links to the catalog pre-sorted).
+  Colors come from the SHOP FIVE design tokens, so dark mode works.
+{%- endcomment -%}
+
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+<div class="sf-filter-bar" id="sf-filter-bar-{{ section.id }}">
+  <div class="container">
+    <div class="sf-filter-bar__inner">
+      <div class="sf-filter-bar__pills">
+        {%- for block in section.blocks -%}
+          {%- assign col = collections[block.settings.collection] -%}
+          {%- assign pill_label = block.settings.label | default: col.title -%}
+          {%- if pill_label != blank -%}
+            <a href="{{ col.url | default: routes.all_products_collection_url }}"
+               class="sf-pill"
+               style="--pd: {{ forloop.index0 }};"
+               {{ block.shopify_attributes }}>
+              {{- pill_label -}}
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if section.settings.show_all_filters -%}
+          <a href="{{ section.settings.all_filters_link | default: routes.collections_url }}" class="sf-pill sf-pill--filters" style="--pd: {{ section.blocks.size }};">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            {%- if is_ar -%}كل الأقسام{%- else -%}{{ section.settings.all_filters_label | default: 'All Filters' }}{%- endif -%}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_sort -%}
+        <div class="sf-filter-bar__sort" style="--pd: {{ section.blocks.size | plus: 1 }};">
+          <button type="button" class="sf-pill sf-pill--sort" aria-haspopup="true">
+            {%- if is_ar -%}ترتيب حسب{%- else -%}{{ section.settings.sort_label | default: 'Sort by' }}{%- endif -%}
+            <svg class="sf-pill__caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+
+          <div class="sf-filter-bar__dropdown">
+            <a href="{{ routes.all_products_collection_url }}?sort_by=best-selling">{% if is_ar %}الأكثر مبيعاً{% else %}Best selling{% endif %}</a>
+            <a href="{{ routes.all_products_collection_url }}?sort_by=created-descending">{% if is_ar %}الأحدث{% else %}Newest{% endif %}</a>
+            <a href="{{ routes.all_products_collection_url }}?sort_by=price-ascending">{% if is_ar %}السعر: من الأقل للأعلى{% else %}Price: low to high{% endif %}</a>
+            <a href="{{ routes.all_products_collection_url }}?sort_by=price-descending">{% if is_ar %}السعر: من الأعلى للأقل{% else %}Price: high to low{% endif %}</a>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  #sf-filter-bar-{{ section.id }} {
+    margin: 18px 0 4px;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__pills {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 6px 2px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    padding: 10px 20px;
+    border-radius: 100px;
+    background: var(--sf-surface, #fff);
+    border: 1px solid var(--sf-line, #E7E8EE);
+    color: var(--sf-ink, #14162B);
+    font-weight: 600;
+    font-size: 13.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: var(--sf-shadow-xs, 0 1px 2px rgba(16,18,38,.05));
+    transition:
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+      border-color 0.25s ease,
+      color 0.25s ease,
+      background-color 0.25s ease,
+      box-shadow 0.25s ease;
+    /* staggered entrance */
+    opacity: 0;
+    transform: translateY(12px);
+    animation: sf-pill-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(var(--pd, 0) * 55ms + 60ms);
+  }
+
+  @keyframes sf-pill-enter {
+    to { opacity: 1; transform: none; }
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-pill:hover {
+    border-color: var(--sf-indigo, #5346F2);
+    color: var(--sf-indigo, #5346F2);
+    background: var(--sf-indigo-soft, #EEEDFE);
+    transform: translateY(-2px);
+    box-shadow: var(--sf-shadow-sm, 0 4px 12px -2px rgba(16,18,38,.08));
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-pill--filters {
+    background: var(--sf-indigo, #5346F2);
+    border-color: var(--sf-indigo, #5346F2);
+    color: #fff;
+    box-shadow: 0 4px 14px -4px rgba(83, 70, 242, 0.45);
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-pill--filters:hover {
+    background: var(--sf-indigo-dark, #4334E0);
+    border-color: var(--sf-indigo-dark, #4334E0);
+    color: #fff;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort .sf-pill {
+    animation-delay: calc(var(--pd, 0) * 55ms + 60ms);
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-pill__caret {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort:hover .sf-pill__caret,
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort:focus-within .sf-pill__caret {
+    transform: rotate(180deg);
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    inset-inline-end: 0;
+    min-width: 230px;
+    padding: 8px;
+    border-radius: 16px;
+    background: var(--sf-surface, #fff);
+    border: 1px solid var(--sf-line, #E7E8EE);
+    box-shadow: var(--sf-shadow-lg, 0 24px 48px -12px rgba(16,18,38,.18));
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.28s ease, transform 0.28s ease, visibility 0.28s;
+    z-index: 20;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__dropdown::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort:hover .sf-filter-bar__dropdown,
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__sort:focus-within .sf-filter-bar__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__dropdown a {
+    display: block;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: var(--sf-ink, #14162B);
+    font-weight: 500;
+    font-size: 13.5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  #sf-filter-bar-{{ section.id }} .sf-filter-bar__dropdown a:hover {
+    background: var(--sf-indigo-soft, #EEEDFE);
+    color: var(--sf-indigo, #5346F2);
+  }
+
+  @media screen and (max-width: 699px) {
+    #sf-filter-bar-{{ section.id }} .sf-pill {
+      padding: 9px 16px;
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #sf-filter-bar-{{ section.id }} .sf-pill {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — Filter bar",
+  "class": "shopify-section--sf-filter-bar",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_all_filters",
+      "label": "Show \"All Filters\" pill",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "all_filters_label",
+      "label": "\"All Filters\" label",
+      "default": "All Filters"
+    },
+    {
+      "type": "url",
+      "id": "all_filters_link",
+      "label": "\"All Filters\" link",
+      "info": "Defaults to the collections list page."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show \"Sort by\" dropdown",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sort_label",
+      "label": "\"Sort by\" label",
+      "default": "Sort by"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pill",
+      "name": "Category pill",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Custom label",
+          "info": "Leave empty to use the collection title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — Filter bar",
+      "category": "Collection",
+      "blocks": [
+        { "type": "pill" },
+        { "type": "pill" },
+        { "type": "pill" },
+        { "type": "pill" }
+      ]
+    }
+  ]
+}
+{% endschema %}
