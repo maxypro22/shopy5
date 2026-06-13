@@ -92,32 +92,27 @@
         --------------------------------------------------------------------------------------
         {%- endcomment -%}
 
-        {%- if navigation_menu.links.size > 0 -%}
-          <nav class="sf-header-nav hidden-pocket hidden-lap" aria-label="{{ 'header.navigation.menu' | t }}">
-            <ul class="sf-header-nav__list list--unstyled" role="list">
-              {%- for link in navigation_menu.links limit: 6 -%}
-                <li class="sf-header-nav__item {% if link.links.size > 0 %}sf-header-nav__item--has-children{% endif %}">
-                  <a href="{{ link.url }}" class="sf-header-nav__link" {% if link.links.size > 0 %}aria-haspopup="true"{% endif %}>
-                    {{- link.title -}}
-                    {%- if link.links.size > 0 -%}
-                      <svg class="sf-header-nav__caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-                    {%- endif -%}
-                  </a>
-
-                  {%- if link.links.size > 0 -%}
-                    <div class="sf-header-nav__dropdown">
-                      <ul class="list--unstyled" role="list">
-                        {%- for sub_link in link.links -%}
-                          <li><a class="sf-header-nav__sub-link" href="{{ sub_link.url }}">{{ sub_link.title }}</a></li>
-                        {%- endfor -%}
-                      </ul>
-                    </div>
-                  {%- endif -%}
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        {%- endif -%}
+        {%- assign is_ar_nav = false -%}
+        {%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar_nav = true -%}{%- endif -%}
+        <nav class="sf-header-nav hidden-pocket hidden-lap" aria-label="{{ 'header.navigation.menu' | t }}">
+          <ul class="sf-header-nav__list list--unstyled" role="list">
+            <li class="sf-header-nav__item">
+              <a href="{{ routes.root_url }}" class="sf-header-nav__link">
+                {%- if is_ar_nav -%}الرئيسية{%- else -%}Home{%- endif -%}
+              </a>
+            </li>
+            <li class="sf-header-nav__item">
+              <a href="{{ routes.collections_url }}" class="sf-header-nav__link">
+                {%- if is_ar_nav -%}الأقسام{%- else -%}Collections{%- endif -%}
+              </a>
+            </li>
+            <li class="sf-header-nav__item">
+              <a href="/pages/contact-us" class="sf-header-nav__link">
+                {%- if is_ar_nav -%}تواصل معنا{%- else -%}Contact{%- endif -%}
+              </a>
+            </li>
+          </ul>
+        </nav>
 
         {%- comment -%}
         --------------------------------------------------------------------------------------
@@ -303,7 +298,7 @@
           {%- endif -%}
 
           {%- if section.settings.show_condensed_search -%}
-            <div class="header__action-item hidden-tablet-and-up">
+            <div class="header__action-item">
               <a class="header__action-item-link" href="{{ routes.search_url }}" data-action="toggle-search" aria-expanded="false" aria-label="{{ 'header.search.open_search' | t }}">{% render 'icon', icon: 'search' %}</a>
             </div>
           {%- endif -%}

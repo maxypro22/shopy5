@@ -1,0 +1,86 @@
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+<section class="sf-app" id="sf-app-{{ section.id }}">
+  <div class="sf-app__bg"></div>
+  <div class="container">
+    <div class="sf-app__inner">
+      <div class="sf-app__text">
+        <p class="sf-app__eyebrow">{% if is_ar %}متاح الآن{% else %}Available Now{% endif %}</p>
+        <h2 class="sf-app__title">
+          {%- if section.settings.title != blank -%}{{ section.settings.title }}{%- elsif is_ar -%}حمّل تطبيق شوب فايف{%- else -%}Download the SHOP FIVE App{%- endif -%}
+        </h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="sf-app__subtitle">{{ section.settings.subtitle }}</p>
+        {%- else -%}
+          <p class="sf-app__subtitle">{% if is_ar %}تسوق أينما كنت — أحذية، ملابس، إكسسوارات، توصيل سريع{% else %}Shop anywhere — shoes, clothing, accessories, fast delivery{% endif %}</p>
+        {%- endif -%}
+        <div class="sf-app__badges">
+          {%- if section.settings.ios_link != blank -%}
+            <a href="{{ section.settings.ios_link }}" class="sf-app__badge sf-app__badge--ios" target="_blank" rel="noopener" aria-label="{% if is_ar %}تحميل من App Store{% else %}Download on the App Store{% endif %}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              <span>
+                <small>{% if is_ar %}تحميل من{% else %}Download on the{% endif %}</small>
+                <strong>App Store</strong>
+              </span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.google_link != blank -%}
+            <a href="{{ section.settings.google_link }}" class="sf-app__badge sf-app__badge--google" target="_blank" rel="noopener" aria-label="{% if is_ar %}تحميل من Google Play{% else %}Get it on Google Play{% endif %}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.18 23.76c.33.19.71.19 1.04 0l11.2-6.48-2.38-2.38-9.86 8.86zM.66 1.08A1.04 1.04 0 000 2v20a1.04 1.04 0 00.66.92L13.3 12 .66 1.08zM22.4 10.44l-2.52-1.46-2.74 2.74 2.74 2.74 2.55-1.47c.73-.42.73-1.6-.03-2.55zM4.22.24c-.33-.19-.71-.18-1.04.01L12.1 9.17l2.38-2.38L4.22.24z"/></svg>
+              <span>
+                <small>{% if is_ar %}احصل عليه من{% else %}Get it on{% endif %}</small>
+                <strong>Google Play</strong>
+              </span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- if section.settings.app_image != blank -%}
+        <div class="sf-app__image">
+          <img src="{{ section.settings.app_image | img_url: '400x' }}" alt="" width="360" loading="lazy">
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — App Download",
+  "class": "shopify-section--sf-app",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "url",
+      "id": "ios_link",
+      "label": "Apple App Store link"
+    },
+    {
+      "type": "url",
+      "id": "google_link",
+      "label": "Google Play link"
+    },
+    {
+      "type": "image_picker",
+      "id": "app_image",
+      "label": "App screenshot / mockup image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — App Download",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

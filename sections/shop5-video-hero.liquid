@@ -1,0 +1,98 @@
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+<section class="sf-video-hero" id="sf-video-hero-{{ section.id }}" style="--vh: {{ section.settings.section_height }}vh;">
+  <div class="sf-video-hero__media">
+    {%- if section.settings.video != blank -%}
+      {{ section.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, class: 'sf-video-hero__video', poster: section.settings.video.preview_image | img_url: '1600x' }}
+    {%- elsif section.settings.fallback_image != blank -%}
+      <img class="sf-video-hero__poster" src="{{ section.settings.fallback_image | img_url: '1600x900' }}" alt="" loading="eager" fetchpriority="high">
+    {%- else -%}
+      <div class="sf-video-hero__default-bg"></div>
+    {%- endif -%}
+    <div class="sf-video-hero__overlay" style="--opa: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+  </div>
+
+  <div class="sf-video-hero__content">
+    {%- if section.settings.title != blank -%}
+      <h2 class="sf-video-hero__title">{{ section.settings.title }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subtitle != blank -%}
+      <p class="sf-video-hero__subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+    <a href="{{ section.settings.button_link | default: routes.collections_url }}"
+       class="sf-video-hero__btn">
+      {%- if section.settings.button_label != blank -%}
+        {{ section.settings.button_label }}
+      {%- elsif is_ar -%}تصفح الأقسام{%- else -%}Browse Collections{%- endif -%}
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — Video Hero",
+  "class": "shopify-section--sf-video-hero",
+  "settings": [
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video (upload to Shopify Files)"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Fallback image (shown while video loads or if no video)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay darkness",
+      "min": 0,
+      "max": 75,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section height",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "default": 80
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "SHOP FIVE"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "أحذية · ملابس · إكسسوارات"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — Video Hero",
+      "category": "Hero"
+    }
+  ]
+}
+{% endschema %}

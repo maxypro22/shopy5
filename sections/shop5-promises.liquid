@@ -1,0 +1,98 @@
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+<section class="sf-promises" id="sf-promises-{{ section.id }}">
+  <div class="container">
+    <h2 class="sf-promises__title">
+      {%- if section.settings.title != blank -%}{{ section.settings.title }}{%- elsif is_ar -%}وعودنا لك{%- else -%}Our Promises{%- endif -%}
+    </h2>
+
+    <div class="sf-promises__grid">
+      {%- for block in section.blocks -%}
+        <div class="sf-promises__card" style="--pi: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <div class="sf-promises__icon">
+            {%- case block.settings.icon -%}
+              {%- when 'truck' -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              {%- when 'return' -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              {%- when 'shield' -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              {%- when 'headphones' -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+              {%- when 'star' -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              {%- else -%}
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            {%- endcase -%}
+          </div>
+          <h3 class="sf-promises__card-title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}
+            <p class="sf-promises__card-text">{{ block.settings.text }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — Our Promises",
+  "class": "shopify-section--sf-promises",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promise",
+      "name": "Promise card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Delivery truck" },
+            { "value": "return", "label": "Easy returns" },
+            { "value": "shield", "label": "Secure payment" },
+            { "value": "headphones", "label": "Support" },
+            { "value": "star", "label": "Quality" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Fast Delivery"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "Delivered within Qatar in 4 hours"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — Our Promises",
+      "category": "Content",
+      "blocks": [
+        { "type": "promise", "settings": { "icon": "truck",       "title": "توصيل سريع",       "text": "توصيل داخل قطر خلال 4 ساعات" } },
+        { "type": "promise", "settings": { "icon": "return",      "title": "إرجاع سهل",        "text": "سياسة إرجاع مرنة خلال 14 يوم" } },
+        { "type": "promise", "settings": { "icon": "shield",      "title": "دفع آمن",           "text": "جميع طرق الدفع مؤمّنة" } },
+        { "type": "promise", "settings": { "icon": "headphones",  "title": "دعم على مدار الساعة", "text": "فريق خدمة العملاء دائماً متاح" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

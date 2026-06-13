@@ -1,0 +1,118 @@
+{%- assign is_ar = false -%}
+{%- if request.locale.iso_code contains 'ar' -%}{%- assign is_ar = true -%}{%- endif -%}
+
+<section class="sf-cat-section" id="sf-cat-{{ section.id }}">
+  <div class="container">
+    <div class="sf-cat-section__head">
+      <h2 class="sf-cat-section__title">
+        {%- if section.settings.title != blank -%}
+          {{ section.settings.title }}
+        {%- elsif is_ar -%}تسوق حسب الفئة{%- else -%}Shop by Category{%- endif -%}
+      </h2>
+      <div class="sf-cat-section__arrows" id="sf-cat-arrows-{{ section.id }}">
+        <button class="sf-cat-section__arrow sf-cat-section__arrow--prev" aria-label="{% if is_ar %}السابق{% else %}Previous{% endif %}" id="sf-cat-prev-{{ section.id }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="sf-cat-section__arrow sf-cat-section__arrow--next" aria-label="{% if is_ar %}التالي{% else %}Next{% endif %}" id="sf-cat-next-{{ section.id }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="sf-cat-section__track-wrap">
+      <div class="sf-cat-section__track" id="sf-cat-track-{{ section.id }}">
+        {%- for block in section.blocks -%}
+          {%- assign col = collections[block.settings.collection] -%}
+          {%- if col != blank -%}
+            <a href="{{ col.url }}" class="sf-cat-section__item" style="--ci: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+              <div class="sf-cat-section__circle">
+                {%- if col.image != blank -%}
+                  <img src="{{ col.image | img_url: '300x300', crop: 'center' }}"
+                       srcset="{{ col.image | img_url: '200x200', crop: 'center' }} 1x, {{ col.image | img_url: '400x400', crop: 'center' }} 2x"
+                       alt="{{ col.title | escape }}"
+                       width="200" height="200"
+                       loading="lazy">
+                {%- else -%}
+                  <div class="sf-cat-section__no-img">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                  </div>
+                {%- endif -%}
+              </div>
+              <span class="sf-cat-section__label">{{ block.settings.label | default: col.title }}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var track = document.getElementById('sf-cat-track-{{ section.id }}');
+  var prev  = document.getElementById('sf-cat-prev-{{ section.id }}');
+  var next  = document.getElementById('sf-cat-next-{{ section.id }}');
+  var arrowBox = document.getElementById('sf-cat-arrows-{{ section.id }}');
+  if (!track || !prev || !next) return;
+
+  function checkOverflow() {
+    arrowBox.style.display = track.scrollWidth > track.clientWidth + 8 ? 'flex' : 'none';
+  }
+
+  prev.addEventListener('click', function () {
+    track.scrollBy({ left: -Math.round(track.clientWidth * 0.7), behavior: 'smooth' });
+  });
+  next.addEventListener('click', function () {
+    track.scrollBy({ left: Math.round(track.clientWidth * 0.7), behavior: 'smooth' });
+  });
+
+  checkOverflow();
+  window.addEventListener('resize', checkOverflow);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "SHOP FIVE — Category Carousel",
+  "class": "shopify-section--sf-cat-carousel",
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category circle",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Custom label",
+          "info": "Leave blank to use collection title."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP FIVE — Category Carousel",
+      "category": "Collection",
+      "blocks": [
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" },
+        { "type": "category" }
+      ]
+    }
+  ]
+}
+{% endschema %}
