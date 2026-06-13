@@ -1,0 +1,825 @@
+/* ============================================
+   SHOP FIVE — Warehouse Theme Custom Override
+   Style: Full Monochrome Minimal
+   Version: 1.1 — Warehouse-Specific Selectors
+   ============================================ */
+
+/* ─────────────────────────────────────────────
+   1. GOOGLE FONTS
+   ───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* ─────────────────────────────────────────────
+   2. CSS VARIABLES
+   ───────────────────────────────────────────── */
+:root {
+  /* Monochrome Palette */
+  --sf-bg:             #F5F5F3;
+  --sf-bg-alt:         #EFEFEF;
+  --sf-white:          #FFFFFF;
+  --sf-black:          #1A1A1A;
+  --sf-charcoal:       #2D2D2D;
+  --sf-gray-dark:      #6B6B6B;
+  --sf-gray-mid:       #999999;
+  --sf-gray-light:     #E5E5E5;
+  --sf-gray-lighter:   #F0F0F0;
+
+  /* Override Warehouse theme variables */
+  --header-background: 255, 255, 255;
+  --header-text-color: 26, 26, 26;
+  --background: 245, 245, 243;
+  --text-color: 26, 26, 26;
+  --text-color-rgb: 26, 26, 26;
+  --heading-color: 26, 26, 26;
+  --primary-button-background: 26, 26, 26;
+  --primary-button-text-color: 255, 255, 255;
+  --border-color: 229, 229, 229;
+  --product-color-background: 245, 245, 243;
+  --accent-color: 26, 26, 26;
+  --section-background: 255, 255, 255;
+  --footer-background: 26, 26, 26;
+  --footer-text-color: 153, 153, 153;
+}
+
+/* ─────────────────────────────────────────────
+   3. GLOBAL BASE
+   ───────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body,
+body.warehouse--v1 {
+  background-color: var(--sf-bg) !important;
+  font-family: 'Outfit', sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  color: var(--sf-black) !important;
+}
+
+/* Arabic override */
+[lang="ar"] body,
+[lang="ar"] *,
+[dir="rtl"] * {
+  font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+}
+
+/* All text elements */
+p, span, li, a, label, div, td, th,
+input, select, textarea, button,
+.warehouse--v1 * {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+  color: var(--sf-black) !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Body text */
+p, .rte p {
+  color: var(--sf-gray-dark) !important;
+  line-height: 1.7 !important;
+}
+
+/* Links */
+a {
+  color: var(--sf-black) !important;
+  transition: opacity 0.2s ease !important;
+}
+
+a:hover {
+  opacity: 0.7 !important;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--sf-black);
+  color: var(--sf-white);
+}
+
+/* ─────────────────────────────────────────────
+   4. ANNOUNCEMENT BAR
+   ───────────────────────────────────────────── */
+.announcement-bar,
+.announcement-bar__wrapper,
+.announcement-bar__content,
+[class*="announcement"] {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.05em !important;
+  font-weight: 400 !important;
+}
+
+.announcement-bar a,
+.announcement-bar__content a {
+  color: var(--sf-white) !important;
+}
+
+/* ─────────────────────────────────────────────
+   5. POPUP / NEWSLETTER — HIDE or Style
+   ───────────────────────────────────────────── */
+/* Hide the newsletter popup that creates blank space */
+.popup-overlay,
+.popup--newsletter,
+[class*="popup"] .popup__inner,
+.newsletter-popup {
+  display: none !important;
+}
+
+/* ─────────────────────────────────────────────
+   6. HEADER
+   ───────────────────────────────────────────── */
+.header,
+.header__wrapper,
+.shopify-section--header,
+.header__inner,
+[data-section-type="header"] {
+  background-color: var(--sf-white) !important;
+  border-bottom: 1px solid var(--sf-gray-light) !important;
+  box-shadow: none !important;
+}
+
+/* Remove extra padding/space in header */
+.header__wrapper {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+/* Logo */
+.header__logo img,
+.header__logo-image {
+  max-height: 36px !important;
+}
+
+.header__logo-text {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: var(--sf-black) !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
+}
+
+/* Nav Links */
+.header__linklist .header__link-item,
+.header__linklist a,
+.header__action-item,
+.header__action-item-link,
+[class*="header"] a,
+.header nav a {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--sf-black) !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+/* Search bar */
+.header .search-bar,
+.header input[type="search"],
+.search-bar__input {
+  border: 2px solid var(--sf-gray-light) !important;
+  border-radius: 0 !important;
+  background: var(--sf-white) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important;
+}
+
+.header input[type="search"]:focus,
+.search-bar__input:focus {
+  border-color: var(--sf-black) !important;
+  outline: none !important;
+}
+
+/* Search button */
+.search-bar__submit,
+.header .search-bar button {
+  background: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Cart icon */
+.header__cart-icon,
+.header__action-item--cart {
+  color: var(--sf-black) !important;
+}
+
+.header__cart-count {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+}
+
+/* Language/Currency selector */
+.header__currency-selector,
+.disclosure,
+.disclosure__toggle {
+  font-size: 12px !important;
+  color: var(--sf-gray-dark) !important;
+}
+
+/* ─────────────────────────────────────────────
+   7. MEGA MENU / DROPDOWN
+   ───────────────────────────────────────────── */
+.mega-menu,
+.header__dropdown,
+[class*="mega-menu"],
+[class*="dropdown"] {
+  background-color: var(--sf-white) !important;
+  border: 1px solid var(--sf-gray-light) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06) !important;
+}
+
+.mega-menu a,
+.header__dropdown a {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: var(--sf-black) !important;
+}
+
+.mega-menu a:hover,
+.header__dropdown a:hover {
+  opacity: 0.6 !important;
+}
+
+/* ─────────────────────────────────────────────
+   8. BUTTONS — All Types
+   ───────────────────────────────────────────── */
+/* Primary */
+.button,
+.Button,
+button.button,
+.button--primary,
+.button--full,
+.shopify-payment-button button,
+.shopify-payment-button__button,
+.product-form__add-button,
+input[type="submit"],
+.form__submit,
+.cart__checkout-button,
+[class*="button--primary"],
+.Button--primary {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  border: 2px solid var(--sf-black) !important;
+  border-radius: 0 !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  padding: 14px 32px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.button:hover,
+.Button:hover,
+.button--primary:hover,
+.product-form__add-button:hover,
+input[type="submit"]:hover,
+.Button--primary:hover {
+  background-color: var(--sf-charcoal) !important;
+  border-color: var(--sf-charcoal) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary / Outline */
+.button--secondary,
+.Button--secondary {
+  background-color: transparent !important;
+  color: var(--sf-black) !important;
+  border: 2px solid var(--sf-black) !important;
+  border-radius: 0 !important;
+}
+
+.button--secondary:hover,
+.Button--secondary:hover {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+}
+
+/* ─────────────────────────────────────────────
+   9. SECTIONS — General
+   ───────────────────────────────────────────── */
+.shopify-section {
+  background-color: var(--sf-bg) !important;
+}
+
+/* Section Titles */
+.section__title,
+.SectionHeader__Heading,
+.section-header__title,
+[class*="SectionHeader"] h2,
+[class*="section-header"] h2,
+.collection-list__title {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 600 !important;
+  color: var(--sf-black) !important;
+  text-transform: none !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
+}
+
+/* Section Description */
+.section__description,
+.SectionHeader__Description {
+  color: var(--sf-gray-dark) !important;
+  font-size: 15px !important;
+}
+
+/* "View All" Links */
+.section__action-link,
+.CollectionList__ViewAll,
+[class*="ViewAll"],
+a.Heading {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--sf-black) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--sf-black) !important;
+}
+
+/* ─────────────────────────────────────────────
+   10. SLIDESHOW / HERO
+   ───────────────────────────────────────────── */
+.slideshow__slide,
+[class*="slideshow"],
+.image-with-text-overlay {
+  border-radius: 0 !important;
+}
+
+/* ─────────────────────────────────────────────
+   11. PRODUCT CARDS
+   ───────────────────────────────────────────── */
+.ProductItem,
+.product-item,
+.product-card,
+[class*="ProductItem"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.ProductItem:hover,
+.product-item:hover {
+  transform: translateY(-3px) !important;
+}
+
+/* Product Image Container */
+.ProductItem__ImageWrapper,
+.product-item__image-wrapper,
+[class*="ProductItem__Image"] {
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background-color: var(--sf-bg-alt) !important;
+}
+
+/* Product Image Hover */
+.ProductItem__ImageWrapper img,
+.product-item__image-wrapper img {
+  transition: transform 0.6s ease !important;
+}
+
+.ProductItem:hover .ProductItem__ImageWrapper img,
+.product-item:hover .product-item__image-wrapper img {
+  transform: scale(1.03) !important;
+}
+
+/* Product Title */
+.ProductItem__Title,
+.product-item__title,
+[class*="ProductItem__Title"] a {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--sf-black) !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin-top: 12px !important;
+  text-decoration: none !important;
+}
+
+/* Product Price */
+.ProductItem__Price,
+.product-item__price,
+.ProductItem .Price,
+.price,
+.Price,
+.Price--highlight,
+.money {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--sf-black) !important;
+}
+
+/* Compare / Sale Price */
+.Price--compareAt,
+.ProductItem__Price .Price--compareAt,
+.price--on-sale .price__regular {
+  color: var(--sf-gray-mid) !important;
+  text-decoration: line-through !important;
+  font-weight: 400 !important;
+}
+
+/* Sale Badge */
+.ProductItem__Label,
+.Badge,
+[class*="Badge"],
+[class*="Label--onSale"] {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  padding: 4px 10px !important;
+}
+
+/* Quick Buy / Action Buttons on Cards */
+.ProductItem__ActionButton,
+.ProductItem__ActionList,
+[class*="ActionButton"] {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+/* ─────────────────────────────────────────────
+   12. COLLECTION PAGES
+   ───────────────────────────────────────────── */
+.collection__description,
+.CollectionInner__Description {
+  color: var(--sf-gray-dark) !important;
+  font-size: 15px !important;
+}
+
+/* Filters Sidebar */
+.CollectionFilters,
+[class*="CollectionFilter"] {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.CollectionFilters__Heading {
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 12px !important;
+}
+
+/* Sort By */
+.CollectionToolbar select,
+.collection-toolbar select {
+  border: 2px solid var(--sf-gray-light) !important;
+  border-radius: 0 !important;
+  font-family: 'Outfit', sans-serif !important;
+}
+
+/* ─────────────────────────────────────────────
+   13. PRODUCT PAGE
+   ───────────────────────────────────────────── */
+.ProductMeta__Title,
+.product-single__title,
+[class*="ProductMeta__Title"] {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--sf-black) !important;
+}
+
+.ProductMeta__Price,
+.product-single__price {
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  color: var(--sf-black) !important;
+}
+
+/* Variant Selectors */
+.ProductForm__Variants select,
+.SizeSwatch,
+[class*="SizeSwatch"] {
+  border: 2px solid var(--sf-gray-light) !important;
+  border-radius: 0 !important;
+  padding: 10px 16px !important;
+  font-size: 14px !important;
+  background-color: var(--sf-white) !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.SizeSwatch.is-selected,
+[class*="SizeSwatch"].is-selected {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+  border-color: var(--sf-black) !important;
+}
+
+/* Quantity */
+.QuantitySelector,
+[class*="QuantitySelector"] {
+  border: 2px solid var(--sf-gray-light) !important;
+  border-radius: 0 !important;
+}
+
+/* Product Description Tabs */
+.ProductMeta__Description,
+.Collapsible {
+  font-size: 15px !important;
+  line-height: 1.7 !important;
+  color: var(--sf-gray-dark) !important;
+}
+
+/* ─────────────────────────────────────────────
+   14. CART DRAWER
+   ───────────────────────────────────────────── */
+.Drawer,
+.Cart__Drawer,
+[class*="Drawer"],
+.mini-cart {
+  background-color: var(--sf-white) !important;
+}
+
+.Drawer__Header {
+  border-bottom: 1px solid var(--sf-gray-light) !important;
+}
+
+.Drawer__Title,
+.Cart__Title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: var(--sf-black) !important;
+}
+
+.CartItem__Title {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--sf-black) !important;
+}
+
+.CartItem__Price {
+  font-weight: 600 !important;
+  color: var(--sf-black) !important;
+}
+
+/* ─────────────────────────────────────────────
+   15. FOOTER
+   ───────────────────────────────────────────── */
+.footer,
+.Footer,
+.shopify-section--footer,
+[class*="Footer"],
+[data-section-type="footer"] {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-gray-mid) !important;
+  padding: 80px 0 32px !important;
+}
+
+.Footer__Title,
+.footer__heading,
+[class*="Footer__Title"] {
+  color: var(--sf-white) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  margin-bottom: 20px !important;
+}
+
+.Footer a,
+.footer a,
+.Footer__Linklist a {
+  color: var(--sf-gray-mid) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-decoration: none !important;
+}
+
+.Footer a:hover,
+.footer a:hover {
+  color: var(--sf-white) !important;
+  opacity: 1 !important;
+}
+
+.Footer__Copyright,
+.footer__copyright {
+  color: rgba(255,255,255,0.4) !important;
+  font-size: 12px !important;
+  border-top: 1px solid rgba(255,255,255,0.1) !important;
+  padding-top: 32px !important;
+  margin-top: 48px !important;
+}
+
+.Footer__PaymentList img,
+.footer__payment img {
+  opacity: 0.6 !important;
+  filter: brightness(0) invert(1) !important;
+}
+
+/* ─────────────────────────────────────────────
+   16. FORMS & INPUTS
+   ───────────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+textarea,
+select,
+.Form__Input,
+[class*="Form__Input"] {
+  border: 2px solid var(--sf-gray-light) !important;
+  border-radius: 0 !important;
+  padding: 12px 16px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 14px !important;
+  color: var(--sf-black) !important;
+  background-color: var(--sf-white) !important;
+  transition: border-color 0.2s ease !important;
+  -webkit-appearance: none !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--sf-black) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+::placeholder {
+  color: var(--sf-gray-mid) !important;
+  font-weight: 300 !important;
+}
+
+/* ─────────────────────────────────────────────
+   17. IMAGE WITH TEXT SECTIONS
+   ───────────────────────────────────────────── */
+.ImageWithText,
+[class*="ImageWithText"] {
+  background-color: var(--sf-white) !important;
+}
+
+/* ─────────────────────────────────────────────
+   18. PAGINATION
+   ───────────────────────────────────────────── */
+.Pagination,
+[class*="Pagination"] {
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.Pagination__NavItem.is-active {
+  background-color: var(--sf-black) !important;
+  color: var(--sf-white) !important;
+}
+
+/* ─────────────────────────────────────────────
+   19. BREADCRUMBS
+   ───────────────────────────────────────────── */
+.Breadcrumb,
+[class*="Breadcrumb"] {
+  font-size: 12px !important;
+  color: var(--sf-gray-mid) !important;
+}
+
+.Breadcrumb a {
+  color: var(--sf-gray-mid) !important;
+}
+
+/* ─────────────────────────────────────────────
+   20. BLANK SPACE FIX
+   ───────────────────────────────────────────── */
+/* Fix popup section creating blank space */
+.shopify-section--popup,
+[data-section-type="popup"],
+[class*="popup-section"] {
+  display: none !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Fix any extra spacing before header */
+.shopify-section--header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ─────────────────────────────────────────────
+   21. CUSTOM SCROLLBAR
+   ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sf-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sf-gray-mid);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sf-gray-dark);
+}
+
+/* ─────────────────────────────────────────────
+   22. LAZY LOAD FADE IN
+   ───────────────────────────────────────────── */
+.lazyload, .lazyloading {
+  opacity: 0 !important;
+  transition: opacity 0.5s ease !important;
+}
+
+.lazyloaded {
+  opacity: 1 !important;
+}
+
+/* ─────────────────────────────────────────────
+   23. MOBILE MENU (DRAWER)
+   ───────────────────────────────────────────── */
+.MobileNav,
+.Drawer--left,
+[class*="MobileNav"] {
+  background-color: var(--sf-white) !important;
+}
+
+.MobileNav__Item,
+.MobileNav a {
+  color: var(--sf-black) !important;
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  border-color: var(--sf-gray-light) !important;
+}
+
+/* ─────────────────────────────────────────────
+   24. RESPONSIVE
+   ───────────────────────────────────────────── */
+@media (max-width: 999px) {
+  .section__title,
+  .SectionHeader__Heading {
+    font-size: 22px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .section__title,
+  .SectionHeader__Heading {
+    font-size: 20px !important;
+  }
+
+  .button,
+  .Button,
+  .button--primary {
+    padding: 12px 24px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+  }
+
+  .ProductItem__Title,
+  .product-item__title {
+    font-size: 13px !important;
+  }
+
+  .Footer,
+  .footer {
+    padding: 48px 0 24px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   25. PAGEFLY OVERRIDE (if using PageFly)
+   ───────────────────────────────────────────── */
+[class*="pagefly"],
+.pf-element {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+}
+
+/* ─────────────────────────────────────────────
+   26. BEAE OVERRIDE (if using BeAE)
+   ───────────────────────────────────────────── */
+[class*="beae"],
+.beae-section {
+  font-family: 'Outfit', 'IBM Plex Sans Arabic', sans-serif !important;
+}

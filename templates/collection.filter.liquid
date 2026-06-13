@@ -1,0 +1,5 @@
+{% layout none %}
+                {% assign products_per_page = 12 %}
+                {% paginate collection.products by products_per_page %}
+                {"products": [{% for product in collection.products %}{"product":{{ product | json }},"options_with_values":{{ product.options_with_values | json }}}{% unless forloop.last == true %},{% endunless %}{% endfor %}]}
+                {% endpaginate %}

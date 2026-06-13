@@ -1,0 +1,36 @@
+{%- layout none -%}
+                    {%- capture results -%}
+
+                    {%- comment -%}
+                    {{- collection.products_count -}}
+                    {{- collection.products.count -}}
+                    {%- endcomment -%}
+                    {%- paginate collection.products by 50 -%}
+                      {%- for product in collection.products -%}
+                            {
+                                "id":{{- product.id | json -}},
+                                "title":{{- product.title | json -}},
+                                "handle":{{- product.handle | json -}},
+                                "vendor":{{- product.vendor | json -}},
+                                "tags":{{- product.tags | json -}},
+                                "type":{{- product.type | json -}},
+                                "price":{{- product.price | money_without_currency | json -}},
+                                "compare_at_price":{{- product.compare_at_price | money_without_currency | json -}},
+                                "description":{{- product.description | json -}},
+                                "variants":{{- product.variants | json -}},
+                                "images":{{- product.images | json -}},
+                                "featured_image":{{- product.featured_image | json -}},
+                                "options":{{- product.options | json -}},
+                                "available":{{- product.available | json -}}
+                            }
+                            {%- comment -%}
+                                    {{- product|json -}}
+                            {%- endcomment -%}
+                            {%- unless forloop.last -%},{%- endunless -%}
+                      {%- endfor -%}
+                    {%- endpaginate -%}
+
+                    {%- endcapture -%}
+                    {
+                       "results": [{{- results -}}]
+                    }

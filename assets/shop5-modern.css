@@ -1,0 +1,911 @@
+/* ==========================================================================
+   SHOP FIVE — Modern Design System for Warehouse theme
+   Indigo / light-surface design language (matches Stitch mockup + logo)
+   Loads AFTER theme.css. Targets real Warehouse v7 selectors.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand palette */
+  --sf-indigo:        #5346F2;
+  --sf-indigo-dark:   #4334E0;
+  --sf-indigo-deep:   #3526C9;
+  --sf-indigo-soft:   #EEEDFE;
+  --sf-indigo-glow:   rgba(83, 70, 242, 0.28);
+  --sf-navy:          #0A0E23;
+  --sf-navy-soft:     #141A38;
+  --sf-ink:           #14162B;
+  --sf-slate:         #5B6273;
+  --sf-mist:          #8A90A5;
+  --sf-line:          #E7E8EE;
+  --sf-surface:       #FFFFFF;
+  --sf-bg:            #F6F6F9;
+  --sf-green:         #10B981;
+  --sf-amber:         #FFB400;
+  --sf-rose:          #F43F5E;
+
+  /* Shape */
+  --sf-radius-xs:  8px;
+  --sf-radius-sm: 12px;
+  --sf-radius-md: 16px;
+  --sf-radius-lg: 20px;
+  --sf-radius-pill: 100px;
+
+  /* Layered shadows */
+  --sf-shadow-xs: 0 1px 2px rgba(16, 18, 38, 0.05);
+  --sf-shadow-sm: 0 1px 2px rgba(16, 18, 38, 0.04), 0 4px 12px -2px rgba(16, 18, 38, 0.06);
+  --sf-shadow-md: 0 2px 4px rgba(16, 18, 38, 0.04), 0 12px 28px -8px rgba(16, 18, 38, 0.14);
+  --sf-shadow-lg: 0 4px 8px rgba(16, 18, 38, 0.05), 0 24px 48px -12px rgba(16, 18, 38, 0.18);
+  --sf-shadow-indigo: 0 8px 24px -6px var(--sf-indigo-glow);
+
+  /* Motion */
+  --sf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sf-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --sf-dur: 0.45s;
+
+  /* Override Warehouse font variables (set in css-variables.liquid, earlier in cascade) */
+  --heading-font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --heading-font-weight: 700;
+  --text-font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Arabic-first typography when the storefront is in Arabic */
+html[lang="ar"] {
+  --heading-font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif;
+  --text-font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL BASE
+   -------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--sf-indigo);
+  color: #fff;
+}
+
+/* Slim modern scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--sf-bg); }
+::-webkit-scrollbar-thumb {
+  background: #C9CCDA;
+  border-radius: 8px;
+  border: 2px solid var(--sf-bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--sf-indigo); }
+
+h1, h2, h3, h4, .heading {
+  letter-spacing: -0.02em;
+}
+
+/* Top loading bar in brand color */
+.loading-bar {
+  background: linear-gradient(90deg, var(--sf-indigo), #8B7CF8);
+  height: 3px;
+}
+
+/* Focus visibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--sf-indigo);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   3. ANNOUNCEMENT BAR — deep navy, subtle sheen
+   -------------------------------------------------------------------------- */
+.announcement-bar {
+  background: linear-gradient(100deg, var(--sf-navy) 0%, #131A45 55%, #1B1465 100%) !important;
+  color: #fff !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.announcement-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.07) 50%, transparent 65%);
+  background-size: 250% 100%;
+  animation: sf-sheen 7s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes sf-sheen {
+  0%   { background-position: 130% 0; }
+  100% { background-position: -130% 0; }
+}
+
+.announcement-bar__content {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   4. HEADER — clean white, becomes floating glass on scroll
+   -------------------------------------------------------------------------- */
+.header {
+  transition: box-shadow 0.35s var(--sf-ease), background-color 0.35s var(--sf-ease);
+}
+
+html.sf-scrolled .shopify-section--header .header {
+  background: rgba(255, 255, 255, 0.86) !important;
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  backdrop-filter: saturate(160%) blur(14px);
+  box-shadow: 0 1px 0 rgba(16, 18, 38, 0.05), 0 10px 30px -12px rgba(16, 18, 38, 0.16);
+}
+
+/* Logo — rounded brand tile */
+.header__logo-image {
+  border-radius: 12px;
+  box-shadow: var(--sf-shadow-sm);
+  transition: transform 0.35s var(--sf-spring), box-shadow 0.35s var(--sf-ease);
+}
+
+.header__logo-link:hover .header__logo-image {
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: var(--sf-shadow-indigo);
+}
+
+.header__logo-text {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Header action items (account / cart) */
+.header__action-item-link {
+  transition: color 0.25s ease, transform 0.25s var(--sf-spring);
+}
+
+.header__action-item-link:hover {
+  color: var(--sf-indigo);
+}
+
+.header__cart-toggle:hover .header__cart-icon {
+  transform: translateY(-2px);
+  transition: transform 0.3s var(--sf-spring);
+}
+
+.header__cart-count {
+  background: var(--sf-indigo) !important;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 2px 8px var(--sf-indigo-glow);
+}
+
+/* Desktop nav — pill hover like the mockup category bar */
+.nav-bar {
+  border-top: 1px solid var(--sf-line);
+}
+
+.nav-bar__link {
+  position: relative;
+  border-radius: var(--sf-radius-pill);
+  transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.nav-bar__link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--sf-indigo);
+  transform: translateX(-50%);
+  transition: width 0.3s var(--sf-ease);
+}
+
+.nav-bar__link:hover { color: var(--sf-indigo); }
+.nav-bar__link:hover::after { width: 55%; }
+
+/* Search — pill input with focus ring */
+.search-bar__input-wrapper,
+.search-bar__input {
+  border-radius: var(--sf-radius-pill) !important;
+}
+
+.search-bar__input {
+  background: var(--sf-bg);
+  border: 1.5px solid transparent;
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.search-bar__input:focus {
+  background: #fff;
+  border-color: var(--sf-indigo);
+  box-shadow: 0 0 0 4px rgba(83, 70, 242, 0.12);
+}
+
+.search-bar__submit {
+  border-radius: var(--sf-radius-pill) !important;
+}
+
+/* Dropdowns / popovers / mega menu — soft floating panels */
+.popover,
+.popover__panel,
+.nav-dropdown,
+.mega-menu {
+  border-radius: var(--sf-radius-md) !important;
+  border: 1px solid var(--sf-line) !important;
+  box-shadow: var(--sf-shadow-lg) !important;
+  overflow: hidden;
+}
+
+.popover__link-item,
+.mega-menu a {
+  transition: color 0.2s ease, padding-inline-start 0.25s var(--sf-ease);
+}
+
+.popover__link-item:hover,
+.mega-menu a:hover {
+  color: var(--sf-indigo);
+}
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS — pill, gradient indigo, hover lift + glow
+   -------------------------------------------------------------------------- */
+.button {
+  border-radius: var(--sf-radius-pill) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition:
+    transform 0.3s var(--sf-spring),
+    box-shadow 0.3s var(--sf-ease),
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+  will-change: transform;
+}
+
+.button--primary {
+  background: linear-gradient(135deg, var(--sf-indigo) 0%, var(--sf-indigo-deep) 100%) !important;
+  border: none;
+  color: #fff !important;
+  box-shadow: 0 2px 6px rgba(83, 70, 242, 0.25);
+}
+
+.button--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--sf-indigo-glow), 0 2px 6px rgba(83, 70, 242, 0.2);
+}
+
+.button--primary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.button--secondary {
+  background: var(--sf-navy) !important;
+  color: #fff !important;
+  border: none;
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.button--secondary:hover {
+  transform: translateY(-2px);
+  background: var(--sf-navy-soft) !important;
+  box-shadow: var(--sf-shadow-md);
+}
+
+.button--ternary {
+  background: var(--sf-indigo-soft) !important;
+  color: var(--sf-indigo) !important;
+  border: none;
+}
+
+.button--ternary:hover {
+  background: #E2DFFD !important;
+  transform: translateY(-2px);
+}
+
+.button--disabled {
+  border-radius: var(--sf-radius-pill) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. PRODUCT CARDS — floating white cards (mockup style)
+   Warehouse renders product grids as one joined panel with hairline
+   separators drawn by `.product-item:after`. We dissolve that panel and
+   repurpose the ::after pseudo-element as an inset card surface, which
+   gives a real gap between cards without touching the fragile %-width
+   flex grid.
+   -------------------------------------------------------------------------- */
+.product-list,
+.product-list--collection {
+  background: transparent !important;
+  border: none !important;
+}
+
+.product-list--collage:before {
+  display: none;
+}
+
+.featured-collection .product-item,
+.featured-collection .product-item:last-child {
+  border-right: 0;
+}
+
+/* theme.css hides :after in featured collections — restore it, it is our card */
+.featured-collection .product-item:after {
+  display: block;
+}
+
+.product-item {
+  position: relative;
+  z-index: 0; /* creates a stacking context so the card layer can sit at z -1 */
+  background: transparent;
+  transition: transform var(--sf-dur) var(--sf-ease);
+  will-change: transform;
+}
+
+/* The card surface */
+.product-item:after,
+.custom-content--product .product-item:after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  bottom: 7px;
+  left: 7px;
+  width: auto;
+  height: auto;
+  z-index: -1;
+  border-radius: var(--sf-radius-lg);
+  background: var(--sf-surface);
+  border: 1px solid var(--sf-line);
+  box-shadow: var(--sf-shadow-xs) !important;
+  pointer-events: none;
+  transition: box-shadow var(--sf-dur) var(--sf-ease), border-color var(--sf-dur) ease;
+}
+
+/* pointer-tracked glow layer (set by shop5-effects.js via --mx / --my) */
+.product-item::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  bottom: 7px;
+  left: 7px;
+  border-radius: var(--sf-radius-lg);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(83, 70, 242, 0.07), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .product-item:hover {
+    transform: translateY(-6px);
+    z-index: 3;
+  }
+
+  .product-item:hover::after {
+    border-color: rgba(83, 70, 242, 0.35);
+    box-shadow: var(--sf-shadow-md), var(--sf-shadow-indigo) !important;
+  }
+
+  .product-item:hover::before { opacity: 1; }
+}
+
+.product-item__image-wrapper {
+  display: block;
+  border-radius: var(--sf-radius-md);
+  overflow: hidden;
+  background: var(--sf-bg);
+}
+
+.product-item__image-wrapper img {
+  transition: transform 0.7s var(--sf-ease), opacity 0.4s ease;
+}
+
+@media (hover: hover) {
+  .product-item:hover .product-item__primary-image {
+    transform: scale(1.06);
+  }
+}
+
+.product-item__title {
+  font-weight: 600;
+  color: var(--sf-ink);
+  transition: color 0.25s ease;
+}
+
+.product-item__title:hover {
+  color: var(--sf-indigo);
+}
+
+/* Price */
+.price {
+  font-weight: 800;
+  color: var(--sf-ink);
+}
+
+.price--highlight {
+  color: var(--sf-indigo);
+}
+
+.price--compare {
+  color: var(--sf-mist);
+  font-weight: 500;
+}
+
+/* Labels / badges — floating pills like "Top item" in the mockup */
+.product-item__label-list {
+  z-index: 3;
+}
+
+.product-label {
+  border-radius: var(--sf-radius-pill) !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.product-label--on-sale {
+  background: var(--sf-rose) !important;
+  color: #fff !important;
+}
+
+/* Color swatches */
+.color-swatch__item {
+  border-radius: 50%;
+  transition: transform 0.25s var(--sf-spring), box-shadow 0.25s ease;
+}
+
+.color-swatch:hover .color-swatch__item {
+  transform: scale(1.18);
+}
+
+.color-swatch__radio:checked + .color-swatch__item {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--sf-indigo);
+}
+
+/* Quick-buy buttons inside cards */
+.product-item__action-list {
+  position: relative;
+  z-index: 2;
+}
+
+.product-item__action-button {
+  border-radius: var(--sf-radius-pill) !important;
+}
+
+/* Desktop: reveal quick-buy actions on hover with a slide-up */
+@media (hover: hover) and (min-width: 1000px) {
+  .product-item .product-item__action-list {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s var(--sf-ease), transform 0.35s var(--sf-ease);
+  }
+
+  .product-item:hover .product-item__action-list,
+  .product-item:focus-within .product-item__action-list {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Inventory dots */
+.inventory {
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   7. COLLECTION CARDS / CATEGORY TILES
+   -------------------------------------------------------------------------- */
+.collection-item {
+  border-radius: var(--sf-radius-lg);
+  overflow: hidden;
+  transition: transform var(--sf-dur) var(--sf-ease), box-shadow var(--sf-dur) var(--sf-ease);
+}
+
+.collection-item__image-wrapper {
+  border-radius: var(--sf-radius-lg);
+  overflow: hidden;
+}
+
+.collection-item__image-wrapper img {
+  transition: transform 0.8s var(--sf-ease);
+}
+
+@media (hover: hover) {
+  .collection-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sf-shadow-md);
+  }
+
+  .collection-item:hover img {
+    transform: scale(1.07);
+  }
+}
+
+.collection-item__title {
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   8. SECTIONS — headers, view-all links, content cards
+   -------------------------------------------------------------------------- */
+.section__title,
+.featured-collection__title {
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.section__action-link {
+  color: var(--sf-indigo);
+  font-weight: 700;
+  transition: color 0.25s ease;
+}
+
+.section__action-link:hover {
+  color: var(--sf-indigo-dark);
+}
+
+.section__action-link svg {
+  transition: transform 0.3s var(--sf-spring);
+}
+
+.section__action-link:hover svg {
+  transform: translateX(4px);
+}
+
+html[dir="rtl"] .section__action-link:hover svg {
+  transform: translateX(-4px);
+}
+
+/* Generic boxed card (collection sidebar, account, cart...) */
+.card {
+  border-radius: var(--sf-radius-lg);
+  border: 1px solid var(--sf-line);
+  box-shadow: var(--sf-shadow-sm);
+  overflow: hidden;
+}
+
+.card__title {
+  letter-spacing: -0.01em;
+}
+
+/* Promotion / image blocks */
+.image-with-text__image-container,
+.image-with-text-overlay,
+.promotion-block {
+  border-radius: var(--sf-radius-lg);
+  overflow: hidden;
+}
+
+/* Services strip (free shipping / support icons) */
+.text-with-icons__item {
+  border-radius: var(--sf-radius-md);
+  transition: transform 0.35s var(--sf-ease), box-shadow 0.35s var(--sf-ease), background-color 0.35s ease;
+}
+
+@media (hover: hover) {
+  .text-with-icons__item:hover {
+    background: var(--sf-surface);
+    transform: translateY(-4px);
+    box-shadow: var(--sf-shadow-md);
+  }
+}
+
+.text-with-icons__icon-wrapper svg {
+  color: var(--sf-indigo);
+  transition: transform 0.4s var(--sf-spring);
+}
+
+.text-with-icons__item:hover .text-with-icons__icon-wrapper svg {
+  transform: translateY(-3px) scale(1.08);
+}
+
+/* Newsletter */
+.newsletter__form .form__input-wrapper input {
+  border-radius: var(--sf-radius-pill);
+}
+
+/* --------------------------------------------------------------------------
+   9. SLIDESHOW / HERO — layered depth
+   -------------------------------------------------------------------------- */
+.slideshow__slide-inner,
+.slideshow__image-wrapper {
+  overflow: hidden;
+}
+
+.slideshow__image {
+  will-change: transform;
+}
+
+.slideshow__slide-content {
+  border-radius: var(--sf-radius-lg);
+}
+
+/* Flickity dots / arrows */
+.flickity-page-dots .dot {
+  background: var(--sf-mist);
+  transition: transform 0.25s var(--sf-spring), background-color 0.25s ease, width 0.25s var(--sf-ease);
+  border-radius: var(--sf-radius-pill);
+}
+
+.flickity-page-dots .dot.is-selected {
+  background: var(--sf-indigo);
+  width: 22px;
+}
+
+.flickity-prev-next-button {
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: var(--sf-shadow-md) !important;
+  transition: transform 0.25s var(--sf-spring), box-shadow 0.25s ease !important;
+}
+
+.flickity-prev-next-button:hover {
+  transform: scale(1.1);
+  box-shadow: var(--sf-shadow-lg) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. FORMS & INPUTS
+   -------------------------------------------------------------------------- */
+.form__field,
+.input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="search"],
+textarea,
+select {
+  border-radius: var(--sf-radius-sm);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.form__field:focus,
+.input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+textarea:focus {
+  border-color: var(--sf-indigo) !important;
+  box-shadow: 0 0 0 4px rgba(83, 70, 242, 0.12);
+}
+
+.quantity-selector {
+  border-radius: var(--sf-radius-pill);
+  overflow: hidden;
+}
+
+/* Block / variant swatches on product page */
+.block-swatch__item {
+  border-radius: var(--sf-radius-sm);
+  transition: border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--sf-spring);
+}
+
+.block-swatch__item:hover {
+  transform: translateY(-2px);
+}
+
+.block-swatch__radio:checked + .block-swatch__item {
+  background: var(--sf-indigo);
+  border-color: var(--sf-indigo);
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   11. PAGINATION & TAGS — pills
+   -------------------------------------------------------------------------- */
+.pagination__nav-item {
+  border-radius: var(--sf-radius-sm) !important;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s var(--sf-spring);
+}
+
+.pagination__nav-item:hover {
+  transform: translateY(-2px);
+  color: var(--sf-indigo);
+}
+
+.pagination__nav-item[aria-current],
+.pagination__nav-item.is-active {
+  background: var(--sf-indigo) !important;
+  color: #fff !important;
+  box-shadow: var(--sf-shadow-indigo);
+}
+
+/* --------------------------------------------------------------------------
+   12. DRAWERS, MODALS, MINI-CART
+   -------------------------------------------------------------------------- */
+.drawer {
+  box-shadow: var(--sf-shadow-lg);
+}
+
+.modal__content,
+.popover__inner {
+  border-radius: var(--sf-radius-lg);
+}
+
+.mini-cart__image-wrapper,
+.line-item__image-wrapper {
+  border-radius: var(--sf-radius-sm);
+  overflow: hidden;
+  background: var(--sf-bg);
+}
+
+.mini-cart__line-item {
+  transition: background-color 0.25s ease;
+}
+
+.line-item__quantity-remove {
+  transition: color 0.2s ease;
+}
+
+.line-item__quantity-remove:hover {
+  color: var(--sf-rose);
+}
+
+/* --------------------------------------------------------------------------
+   13. FOOTER — deep navy with indigo accents
+   -------------------------------------------------------------------------- */
+.footer__title {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.footer__link-item {
+  position: relative;
+  transition: color 0.25s ease, padding-inline-start 0.25s var(--sf-ease);
+}
+
+.footer__link-item:hover {
+  color: #fff !important;
+  padding-inline-start: 6px;
+}
+
+.social-media__item {
+  border-radius: 50%;
+  transition: transform 0.3s var(--sf-spring), color 0.25s ease;
+}
+
+.social-media__item:hover {
+  transform: translateY(-3px) scale(1.12);
+}
+
+.payment-list__item {
+  border-radius: 4px;
+  transition: transform 0.25s var(--sf-spring), opacity 0.25s ease;
+  opacity: 0.85;
+}
+
+.payment-list__item:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   14. SCROLL-REVEAL ANIMATION SYSTEM (driven by shop5-effects.js)
+   -------------------------------------------------------------------------- */
+html.sf-js .sf-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--sf-ease),
+    transform 0.7s var(--sf-ease);
+  transition-delay: calc(var(--sf-d, 0) * 70ms);
+  will-change: opacity, transform;
+}
+
+html.sf-js .sf-reveal--scale {
+  transform: translateY(18px) scale(0.96);
+}
+
+html.sf-js .sf-reveal.sf-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Floating back-to-top button */
+.sf-top-button {
+  position: fixed;
+  inset-inline-end: 22px;
+  bottom: 22px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--sf-indigo);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--sf-shadow-indigo), var(--sf-shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.35s var(--sf-ease), transform 0.35s var(--sf-spring), visibility 0.35s, background-color 0.25s ease;
+  z-index: 60;
+}
+
+.sf-top-button.sf-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sf-top-button:hover {
+  background: var(--sf-indigo-dark);
+  transform: translateY(-3px);
+}
+
+.sf-top-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* --------------------------------------------------------------------------
+   15. LAZY IMAGE PLACEHOLDER
+   (static tint only — an animated shimmer would keep compositing forever
+   behind transparent product images)
+   -------------------------------------------------------------------------- */
+.product-item__image-wrapper .aspect-ratio,
+.collection-item__image-wrapper .aspect-ratio {
+  background: var(--sf-bg);
+  border-radius: var(--sf-radius-md);
+}
+
+/* --------------------------------------------------------------------------
+   16. MOBILE REFINEMENTS
+   -------------------------------------------------------------------------- */
+@media (max-width: 699px) {
+  .product-item {
+    border-radius: var(--sf-radius-md);
+    padding: 8px 8px 12px;
+  }
+
+  .sf-top-button {
+    width: 42px;
+    height: 42px;
+    inset-inline-end: 16px;
+    bottom: 16px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. REDUCED MOTION — disable all decorative animation
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  html.sf-js .sf-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .announcement-bar::after,
+  .aspect-ratio {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

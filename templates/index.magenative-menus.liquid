@@ -1,0 +1,52 @@
+{% layout none %}
+                    {% capture results %}
+                    {% for linker in linklists %}
+                    {
+                        "handle":{{linker.handle | json}},
+                        "title":{{linker.title | json}},
+                        "id":{{linker.id | json}},
+                        {% assign list_handle = linker.handle | json %}
+                        "menus":[
+                            {% for link in linker.links %}
+                                {
+                                  "url": {{ link.url | json }},
+                                  "title":{{ link.title | json }},
+                                  "handle":{%if link.handle!="" %}{{link.handle | json}}{%else%}{{link.title | handleize | json}}{%endif%},
+                                  "object":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object | json}}{% else %}{{null | json}}{%endif%},
+                                  "id":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.id | json}}{% else %}{{null | json}}{%endif%},
+                                  "obj-handle":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.handle | json}}{% else %}{{null | json}}{%endif%},
+                                  "obj-title":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.title | json}}{% else %}{{null | json}}{%endif%},
+                                  "type":{{link.type | json}}
+                                  {% comment %},
+                                  "child-links": [
+                                    {% assign child_list_handle = link.title | handleize %}
+                                        {% if linklists[child_list_handle].links != blank %}
+                                            {% assign menu = linklists[child_list_handle] %}
+                                                {% for childlink in menu.links %}
+                                                    {
+                                                      "url": {{ childlink.url | json}},
+                                                      "title":{{ childlink.title | json }},
+                                                      "handle":{%if childlink.handle!="" %}{{childlink.handle | json}}{%else%}{{childlink.title | handleize | json}}{%endif%},
+                                                      "object":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object | json}}{% else %}{{null | json}}{%endif%},
+                                                      "id":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.id | json}}{% else %}{{null | json}}{%endif%},
+                                                      "obj-handle":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.handle | json}}{% else %}{{null | json}}{%endif%},
+                                                      "obj-title":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.title | json}}{% else %}{{childlink.title | json}}{%endif%},
+                                                      "type":{{childlink.type | json}}
+                                                    }
+                                                    {% unless forloop.last %},{% endunless %}
+                                                {% endfor %}
+                                        {% endif %}
+                                    ]
+                                   {% endcomment %}
+                                }
+                                {% unless forloop.last %},{% endunless %}
+                            {% endfor %}
+                            ]
+                            
+                    }
+                    {% unless forloop.last %},{% endunless %}
+                    {% endfor %}
+                    {% endcapture %}
+                    {
+                        "results": [{{ results }}]
+                    }

@@ -1,0 +1,67 @@
+{%-layout none -%}
+                        {%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+                        {%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last | replace:'\/','/' | replace:'%20',' ' | replace:'\u0026','&'-%}
+                        {%- assign pageQuerystring = pageUrl | split:'?' | last -%}
+                        {%- assign parts = pageQuerystring | split:'&' -%}
+                        {%- for part in parts -%}
+                            {%- assign keyAndValue = part | split:'=' -%}
+                            {%- if keyAndValue.size > 1 -%}
+                                {% if keyAndValue[0] == "handle" %}
+                                    {% assign menu_handle =  keyAndValue[1] %}
+                                {% endif %}
+                            {%endif%}
+                        {%endfor%}{% capture results %}
+                            {% for link in linklists[menu_handle].links %}
+                            {
+                                "url": {{ link.url | json }},
+                                "title":{{ link.title | json }},
+                                "handle":{%if link.handle!="" %}{{link.handle | json}}{%else%}{{link.title | handleize | json}}{%endif%},
+                                "object":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object | json}}{% else %}{{null | json}}{%endif%},
+                                "id":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.id | json}}{% else %}{{null | json}}{%endif%},
+                                "obj-handle":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.handle | json}}{% else %}{{null | json}}{%endif%},
+                                "obj-title":{% if link.type == "collection_link" or link.type == "product_link" or link.type == "page_link" or link.type == "blog_link" %}{{link.object.title | json}}{% else %}{{null | json}}{%endif%},
+                                "type":{{link.type | json}},
+                                "child-links": [
+                                    {% assign child_list_handle = link.title | handleize %}
+                                    {% if linklists[child_list_handle].links != blank %}
+                                        {% for childlink in link.links %}
+                                            {
+                                                "url": {{ childlink.url | json}},
+                                                "title":{{ childlink.title | json }},
+                                                "handle":{%if childlink.handle!="" %}{{childlink.handle | json}}{%else%}{{childlink.title | handleize | json}}{%endif%},
+                                                "object":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object | json}}{% else %}{{null | json}}{%endif%},
+                                                "id":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.id | json}}{% else %}{{null | json}}{%endif%},
+                                                "obj-handle":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.handle | json}}{% else %}{{null | json}}{%endif%},
+                                                "obj-title":{% if childlink.type == "collection_link" or childlink.type == "product_link" or childlink.type == "page_link" or childlink.type == "blog_link" %}{{childlink.object.title | json}}{% else %}{{childlink.title | json}}{%endif%},
+                                                "type":{{childlink.type | json}},
+                                                "grand-child-links": [
+                                                    {% assign grand_child_list_handle = link.title | handleize %}
+                                                    {% if linklists[grand_child_list_handle].links != blank %}
+                                                        {%- for grandchildlink in childlink.links -%}
+                                                            {
+                                                            "url": {{ grandchildlink.url | json}},
+                                                            "title":{{ grandchildlink.title | json }},
+                                                            "handle":{%if grandchildlink.handle!="" %}{{grandchildlink.handle | json}}{%else%}{{grandchildlink.title | handleize | json}}{%endif%},
+                                                            "object":{% if grandchildlink.type == "collection_link" or grandchildlink.type == "product_link" or grandchildlink.type == "page_link" or grandchildlink.type == "blog_link" %}{{grandchildlink.object | json}}{% else %}{{null | json}}{%endif%},
+                                                            "id":{% if grandchildlink.type == "collection_link" or grandchildlink.type == "product_link" or grandchildlink.type == "page_link" or grandchildlink.type == "blog_link" %}{{grandchildlink.object.id | json}}{% else %}{{null | json}}{%endif%},
+                                                            "obj-handle":{% if grandchildlink.type == "collection_link" or grandchildlink.type == "product_link" or grandchildlink.type == "page_link" or grandchildlink.type == "blog_link" %}{{grandchildlink.object.handle | json}}{% else %}{{null | json}}{%endif%},
+                                                            "obj-title":{% if grandchildlink.type == "collection_link" or grandchildlink.type == "product_link" or grandchildlink.type == "page_link" or grandchildlink.type == "blog_link" %}{{grandchildlink.object.title | json}}{% else %}{{grandchildlink.title | json}}{%endif%},
+                                                            "type":{{grandchildlink.type | json}}
+                                                            }
+                                                            {% unless forloop.last %},{% endunless %}
+                                                        {%-endfor-%}
+                                                    {% endif %}
+                                                ]
+                                            }
+                                            {% unless forloop.last %},{% endunless %}
+                                        {% endfor %}
+                                    {% endif %}
+                                ]
+                            }
+                            {% unless forloop.last %},{% endunless %}
+                            {% endfor %}
+                        {% endcapture %}
+
+                        {
+                            "results": [{{ results }}]
+                        }

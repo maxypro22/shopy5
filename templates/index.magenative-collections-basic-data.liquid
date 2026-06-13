@@ -1,0 +1,23 @@
+{%- layout none -%}
+                    {%- capture results -%}
+                    {%- assign paginate = "" -%}
+                    {%- paginate collections by 1000 -%}
+                      {
+                      {%- for collection in collections -%}
+
+                            "{{-collection.id|json-}}":{
+                                      "sort-order":{{-collection.default_sort_by|json-}}
+                              }
+
+                        {%- unless forloop.last -%},{%- endunless -%}
+                      {%- endfor -%}
+                      }
+                    {%- assign paginate = paginate | json -%}
+                    {%- endpaginate -%}
+                    {%- endcapture -%}
+                    {
+                        "results": {
+                              "collections":{{- results -}},
+                              "pagination":{{-paginate-}}
+                            }
+                    }

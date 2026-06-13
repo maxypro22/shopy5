@@ -1,0 +1,92 @@
+{%- layout none -%}
+                    {%- assign urlParamsArray = canonical_url | split: '?' -%}
+                    {%- assign urlParamsSize = urlParamsArray | size -%}
+                    {%- if urlParamsSize > 1 -%}
+                        {%- assign params = urlParamsArray[1] | split: '&' -%}
+                    {%- endif -%}
+                    {%- assign paramsSize = params | size -%}
+                    {%- assign keyString = '' -%}
+                    {%- assign valString = '' -%}
+                    {%- if paramsSize > 0 -%}
+                      {%- for val in params -%}
+                        {%- assign subParams = val | split: '=' -%}
+                        {%- assign subParamsSize = subParams | size -%}
+                        {%- if subParamsSize > 1 -%}
+                          {%- if keyString == '' -%}
+                            {%-assign keyString = keyString | append:subParams [0]-%}
+                          {%-else-%}
+                            {%-assign keyString = keyString | append: '~-' | append:subParams [0]-%}
+                          {%-endif-%}
+                          {%-if valString == ''-%}
+                            {%-assign valString = valString | append:subParams [1]-%}
+                          {%-else-%}
+                            {%-assign valString = valString | append: '~-' | append:subParams [1]-%}
+                          {%-endif-%}
+                        {%-endif-%}
+                      {%-endfor-%}
+                      {%-if keyString != ''-%}
+                        {%-assign keyStringArray = keyString | split: '~-'-%}
+                      {%-endif-%}
+                      {%-if valString != ''-%}
+                        {%-assign valStringArray = valString | split: '~-'-%}
+                      {%-endif-%}
+                      
+                    {%-endif-%}
+                    {%-assign collectionIndex = ''-%}
+                    {%-assign collectionString = ''-%}
+                    {%- assign paginateObject = '' -%}
+                    {%- if keyStringArray contains 'collection'-%}
+                      {%-for val in keyStringArray-%}
+                        {%-if val == 'collection'-%}
+                              {%-assign collectionIndex = forloop.index | minus: 1-%}
+                              {%-assign collectionString = valStringArray[collectionIndex]-%}
+                        {%- endif -%}
+                      {%-endfor-%}
+                    {%-endif-%}
+                    {%- assign priceFieldsArray = 'price,compare_at_price,price_max,price_min' | split: ',' -%}
+                    {%- assign fieldsArray = 'id,handle,title,featured_image,price,compare_at_price' | split : ','-%}
+                    {%- capture productsJson -%}
+                    {%- paginate search.results by 1000 -%}
+                    {%- if search.performed -%}
+                      {%- if search.results_count > 0 -%}
+                        {%- for item in search.results -%}
+                          {%- if item.object_type == 'product'-%}
+                              {%- assign isCollection = item.collections | where: 'handle', collectionString | size -%}
+                              {%- if isCollection > 0-%}
+                                    {
+                                      {%- for field in fieldsArray -%}
+                                        {%- if priceFieldsArray contains field -%}
+                                            {%- assign fieldValue = item[field] | money -%}
+                                        {%- else -%}
+                                            {%- assign fieldValue = item[field] -%}
+                                        {%- endif-%}
+                                        {{field| json}}: {{fieldValue | json}}
+                                        {%- unless forloop.last-%},{%- endunless-%}
+                                      {%- endfor -%}
+                                    }
+                                    {%- unless forloop.last-%},{%- endunless-%}
+                               {%- endif-%}
+                          {%- endif-%}
+                        {%- endfor -%}
+                      {% endif %}
+                    {%- assign paginateObject = paginate -%}                     
+                    {%- endif -%}
+
+                    {%- endpaginate -%}
+                    {%- endcapture -%}
+                    {%- assign productsJson = productsJson |strip -%}
+                    {%- assign lastchar = productsJson | slice : -1 -%}
+                    {%- assign stringsize = productsJson | size -%}
+                    {%- if lastchar == ',' -%}
+                        {%- assign stringsize = stringsize | minus: 1 -%}
+                        {%- assign productsJson = productsJson | slice : 0, stringsize -%}
+                    {%- endif -%}
+                    {%- capture json-%}
+                    {
+                      {{- 'results' | json -}}: { 
+                        {{- 'products' | json -}} :[{{- productsJson -}}], 
+                        {{- 'paginate' | json -}}: {{- paginateObject | json -}}
+                        }
+                    }
+                    {%- endcapture -%}
+                    {%- echo json-%}

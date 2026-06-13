@@ -1,0 +1,14 @@
+{%- layout none -%}
+                    {%- capture count -%}
+
+
+                    {{- collection.products_count -}}
+                    {%- comment -%}
+                    {{- collection.products.count -}}
+                    {%- endcomment -%}
+
+
+                    {%- endcapture -%}
+                    {
+                       "count": {{- count -}}
+                    }
